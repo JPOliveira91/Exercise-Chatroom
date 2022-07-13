@@ -1,0 +1,37 @@
+﻿@page
+@model Chatroom.UI.Pages.NewUserModel
+@{
+    ViewData["Title"] = "New User";
+}
+
+<div class="text-center">
+    <h1 class="display-4">New User</h1>
+
+    <form method="post">
+        <table class="horizontal-center">
+            <tr>
+                <td>
+                    <label class="control-label">Username</label>
+                </td>
+                <td>
+                    <input asp-for="User.UserName" class="form-control" />
+                    <span asp-validation-for="User.UserName" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">Password</label>
+                </td>
+                <td>
+                    <input asp-for="User.PasswordHash" class="form-control" type="password" />
+                    <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="padding-top: 10px;">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
