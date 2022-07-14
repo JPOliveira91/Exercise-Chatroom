@@ -1,6 +1,5 @@
 using Chatroom.UI.Data;
 using Chatroom.UI.Models;
-using Chatroom.Util;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chatroom.UI.Pages
 {
-    //[AllowAnonymous]
+    [AllowAnonymous]
     public class NewUserModel : PageModel
     {
         private readonly UserManager<User> _userManager;
-        private readonly ChatroomUIContext _context;
         private readonly SignInManager<User> _signInManager;
 
         public NewUserModel(
@@ -43,7 +41,7 @@ namespace Chatroom.UI.Pages
                 return RedirectToPage("./NewUser");
             }
 
-            var user = new User { UserName = User.UserName };
+            var user = new User { UserName = User.UserName, RegistrationDate = DateTime.Now, LastLoginTime = DateTime.Now };
             var result = await _userManager.CreateAsync(user, User.PasswordHash);
             if (result.Succeeded)
             {

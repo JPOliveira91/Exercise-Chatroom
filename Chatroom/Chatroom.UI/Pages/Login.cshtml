@@ -14,8 +14,8 @@
                     <label class="control-label">Username</label>
                 </td>
                 <td>
-                    <input asp-for="User.UserName" class="form-control" />
-                    <span asp-validation-for="User.UserName" class="text-danger"></span>
+                    <input asp-for="LoginUser.UserName" class="form-control" />
+                    <span asp-validation-for="LoginUser.UserName" class="text-danger"></span>
                 </td>
             </tr>
             <tr>
@@ -23,8 +23,8 @@
                     <label class="control-label">Password</label>
                 </td>
                 <td>
-                    <input asp-for="User.PasswordHash" class="form-control" type="password" />
-                    <span asp-validation-for="User.PasswordHash" class="text-danger"></span>
+                    <input asp-for="LoginUser.PasswordHash" class="form-control" type="password" />
+                    <span asp-validation-for="LoginUser.PasswordHash" class="text-danger"></span>
                 </td>
             </tr>
             <tr>
