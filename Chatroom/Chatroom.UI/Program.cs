@@ -2,11 +2,14 @@ using Chatroom.UI.Data;
 using Chatroom.UI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SignalRChat.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
+
 builder.Services.AddDbContext<ChatroomUIContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ChatroomUIContext") ?? throw new InvalidOperationException("Connection string 'RazorPagesMovieContext' not found.")));
 builder.Services.AddIdentity<User, IdentityRole>(options => { options.SignIn.RequireConfirmedAccount = false; options.SignIn.RequireConfirmedEmail = false; options.SignIn.RequireConfirmedPhoneNumber = false; })
@@ -64,5 +67,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chatHub");
 
 app.Run();
