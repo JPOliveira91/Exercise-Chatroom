@@ -21,22 +21,8 @@
     </table>
 </div>
 
-<table class="table">
-    <thead></thead>
-    <tbody>
-        @foreach (var message in Model.Messages)
-        {
-            <tr>
-                <td>
-                    <label style="font-style: italic;">(@message.Date.ToString())</label> <label style="font-weight: bold;">@message.UserName</label>: @message.Text
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
 <div class="row">
-    <div class="col-6">
+    <div class="col-6" style="width: 100%">
         <ul id="messagesList"></ul>
     </div>
 </div>

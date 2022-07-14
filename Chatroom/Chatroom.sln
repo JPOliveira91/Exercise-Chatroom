@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatroom.UI", "Chatroom.UI\Chatroom.UI.csproj", "{96680E4B-384C-4397-9A21-7937382B2285}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatroom.Bot", "Chatroom.Bot\Chatroom.Bot.csproj", "{F02031E5-FADF-40FA-9780-DA9EC052919D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{96680E4B-384C-4397-9A21-7937382B2285}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96680E4B-384C-4397-9A21-7937382B2285}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96680E4B-384C-4397-9A21-7937382B2285}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

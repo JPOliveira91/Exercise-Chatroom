@@ -18,9 +18,9 @@ namespace SignalRChat.Hubs
         {
             if (message.StartsWith("/stock="))
             {
-                var stockCode = message.Replace("/stock=", "");
+                var stockCode = message.Replace("/stock=", "").ToUpper();
 
-                message = string.Format("{0} quote is 123.45 per share", stockCode);
+                message = RetrieveStockPriceMessage(stockCode);
                 user = "STOCK_BOT";
             }
 
@@ -33,6 +33,17 @@ namespace SignalRChat.Hubs
             });
 
             await Clients.All.SendAsync("ReceiveMessage", user, date.ToString(), message);
+        }
+
+        public string RetrieveStockPriceMessage(string stockCode)
+        {
+            var rpcClient = new RpcClient();
+
+            var response = rpcClient.RetrieveStockPrice(stockCode);
+
+            rpcClient.Close();
+
+            return response;
         }
 
         public void SaveMessage(Message message)
