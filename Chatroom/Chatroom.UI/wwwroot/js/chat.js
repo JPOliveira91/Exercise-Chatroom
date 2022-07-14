@@ -15,7 +15,6 @@ connection.on("ReceiveMessage", function (user, date, message) {
     }
 
     messagesList.insertBefore(li, messagesList.firstChild);
-    //messagesList.appendChild(li);
 
     // We can assign user-supplied strings to an element's textContent because it
     // is not interpreted as markup. If you're assigning in any other way, you 
