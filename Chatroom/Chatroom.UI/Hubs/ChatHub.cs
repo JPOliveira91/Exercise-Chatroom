@@ -14,7 +14,7 @@ namespace SignalRChat.Hubs
             _context = context;
         }
 
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(string room, string user, string message)
         {
             if (message.StartsWith("/stock="))
             {
@@ -29,10 +29,11 @@ namespace SignalRChat.Hubs
             SaveMessage(new Message() {
                 Date = date,
                 Text = message,
-                UserName = user
+                UserName = user,
+                Room = room
             });
 
-            await Clients.All.SendAsync("ReceiveMessage", user, date.ToString(), message);
+            await Clients.All.SendAsync("ReceiveMessage", room, user, date.ToString(), message);
         }
 
         public string RetrieveStockPriceMessage(string stockCode)

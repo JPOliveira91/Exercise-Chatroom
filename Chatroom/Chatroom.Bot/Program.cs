@@ -2,9 +2,7 @@
 using RabbitMQ.Client.Events;
 using System.Net.Http.Headers;
 using System.Text;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
+using System.Globalization;
 
 var factory = new ConnectionFactory() { HostName = "localhost" };
 using (var connection = factory.CreateConnection())
@@ -57,7 +55,7 @@ string RetrieveStockPriceFromAPI(string stockCode)
 {
     var url = "https://stooq.com/q/l/";
     var urlParameters = string.Format("?s={0}&f=sd2t2ohlcv&h&e=csv", stockCode.ToLower());
-    var stockPrice = "";
+    decimal decStockPrice = 0;
 
     HttpClient client = new HttpClient();
     client.BaseAddress = new Uri(url);
@@ -71,10 +69,11 @@ string RetrieveStockPriceFromAPI(string stockCode)
         // Parse the response body.
         var csvStream = response.Content.ReadAsStreamAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
 
-        stockPrice = RetrieveStockPriceFromCSV(csvStream);
-        decimal decStockPrice = 0;
+        var style = NumberStyles.Number;
+        var stockPrice = RetrieveStockPriceFromCSV(csvStream);
+        var culture = CultureInfo.CreateSpecificCulture("en-US");
 
-        if (!Decimal.TryParse(stockPrice, out decStockPrice)) throw new Exception("Invalid stock price.");
+        if (!Decimal.TryParse(stockPrice, style, culture, out decStockPrice)) throw new Exception("Invalid stock price.");
     }
     else
     {
@@ -84,7 +83,7 @@ string RetrieveStockPriceFromAPI(string stockCode)
     // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
     client.Dispose();
 
-    return stockPrice;
+    return decStockPrice.ToString("0.00");
 }
 
 string RetrieveStockPriceFromCSV(Stream csvStream)
@@ -102,5 +101,5 @@ string RetrieveStockPriceFromCSV(Stream csvStream)
     line = sr.ReadLine();
     column = line.Split(',');
 
-    return (!string.IsNullOrWhiteSpace(column[6])) ? column[6] : column[3];
+    return column[6];
 }
