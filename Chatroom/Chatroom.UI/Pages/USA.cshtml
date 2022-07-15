@@ -1,0 +1,49 @@
+﻿@page
+@model USAModel
+@{
+    ViewData["Title"] = "USA chatroom";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to USA chatroom, @User.Identity.Name!</h1>
+</div>
+
+<div class="form-group">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 100%;">
+                <input asp-for="Message.Text" class="form-control" id="messageInput" />
+            </td>
+            <td style="padding-left: 10px;">
+                <input type="button" class="btn btn-primary" id="sendButton" value="Send" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-6" style="width: 100%; margin-top: 10px;">
+        <ul id="messagesListUSA"></ul>
+    </div>
+</div>
+
+<input type="hidden" id="hdnCurrentRoom" value="USA">
+<input type="hidden" id="hdnUserName" value="@User.Identity.Name">
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+
+<script type="text/javascript">
+     var input = document.getElementById("messageInput");
+
+    // Execute a function when the user presses a key on the keyboard
+    input.addEventListener("keypress", function(event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("sendButton").click();
+      }
+    });
+</script>

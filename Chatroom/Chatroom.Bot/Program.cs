@@ -62,6 +62,8 @@ string RetrieveStockPriceFromAPI(string stockCode)
 
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+    var culture = CultureInfo.CreateSpecificCulture("en-US");
+
     // List data response.
     HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
     if (response.IsSuccessStatusCode)
@@ -71,7 +73,6 @@ string RetrieveStockPriceFromAPI(string stockCode)
 
         var style = NumberStyles.Number;
         var stockPrice = RetrieveStockPriceFromCSV(csvStream);
-        var culture = CultureInfo.CreateSpecificCulture("en-US");
 
         if (!Decimal.TryParse(stockPrice, style, culture, out decStockPrice)) throw new Exception("Invalid stock price.");
     }
@@ -83,7 +84,7 @@ string RetrieveStockPriceFromAPI(string stockCode)
     // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
     client.Dispose();
 
-    return decStockPrice.ToString("0.00");
+    return decStockPrice.ToString("0.00", culture);
 }
 
 string RetrieveStockPriceFromCSV(Stream csvStream)
