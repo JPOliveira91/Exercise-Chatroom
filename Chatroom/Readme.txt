@@ -1,3 +1,10 @@
+Pre-requisites
+
+- Installed RabbitMQ Server
+- Installed MS SQL Server
+- Installed .NET 6
+- Installed Visual Studio
+
 How to build Chatroom environment
 
 01) Open Visual Studio

@@ -1,9 +1,9 @@
-﻿using Chatroom.Bot;
+﻿using Chatroom.Bot.Class;
 using FluentAssertions;
 using System;
 using Xunit;
 
-namespace Chatroom.Test
+namespace Chatroom.Bot.UnitTest
 {
     public class ProcessRawStockPrice_Test
     {

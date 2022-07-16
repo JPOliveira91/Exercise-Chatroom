@@ -1,4 +1,4 @@
-﻿using Chatroom.Bot;
+﻿using Chatroom.Bot.Class;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -29,7 +29,8 @@ using (var channel = connection.CreateModel())
         try
         {
             Console.WriteLine(" [.] RetrieveStockPrice({0})", stockCode);
-            var processStockPrice = new ProcessStockPrice();
+            var apiIntegration = new APIIntegration();
+            var processStockPrice = new ProcessStockPrice(apiIntegration);
             response = string.Format("{0} quote is ${1} per share", stockCode, processStockPrice.RetrieveStockPrice(stockCode));
         }
         catch (Exception e)

@@ -1,10 +1,10 @@
-using Chatroom.Bot;
+using Chatroom.Bot.Class;
 using FluentAssertions;
 using System;
 using System.IO;
 using Xunit;
 
-namespace Chatroom.Test
+namespace Chatroom.Bot.UnitTest
 {
     public class RetrieveRawStockPriceFromCSV_Test
     {

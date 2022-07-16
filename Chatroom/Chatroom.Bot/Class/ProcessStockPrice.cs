@@ -1,10 +1,22 @@
-﻿using System.Net.Http.Headers;
-using System.Globalization;
+﻿using System.Globalization;
+using Chatroom.Bot.Interface;
 
-namespace Chatroom.Bot
+namespace Chatroom.Bot.Class
 {
-    public class ProcessStockPrice
+    public class ProcessStockPrice : IProcessStockPrice
     {
+        public readonly IAPIIntegration _apiIntegration;
+
+        public ProcessStockPrice()
+        {
+            _apiIntegration = new APIIntegration();
+        }
+
+        public ProcessStockPrice(IAPIIntegration apiIntegration)
+        {
+            _apiIntegration = apiIntegration;
+        }
+
         public string RetrieveStockPrice(string stockCode)
         {
             var csvStream = RetrieveCSVFromAPI(stockCode);
@@ -15,17 +27,9 @@ namespace Chatroom.Bot
 
         public StreamReader RetrieveCSVFromAPI(string stockCode)
         {
-            var url = "https://stooq.com/q/l/";
-            var urlParameters = string.Format("?s={0}&f=sd2t2ohlcv&h&e=csv", stockCode.ToLower());
-
-            HttpClient client = new HttpClient();
             StreamReader csvStream = StreamReader.Null;
-            client.BaseAddress = new Uri(url);
 
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // List data response.
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+            HttpResponseMessage response = _apiIntegration.CallAPI(stockCode);
 
             if (response.IsSuccessStatusCode)
             {
@@ -37,9 +41,18 @@ namespace Chatroom.Bot
                 throw new Exception(string.Format("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase));
             }
 
-            if (csvStream == StreamReader.Null) throw new Exception(String.Format("CSV was not retrieved for stockcode {0}.", stockCode));
+            if (DataIsEmpty(csvStream)) throw new Exception(String.Format("Empty data retrieved for stockcode {0}.", stockCode));
 
             return csvStream;
+        }
+
+        private static bool DataIsEmpty(StreamReader csvStream)
+        {            
+            if (csvStream == StreamReader.Null) return true;
+
+            if (csvStream.Peek() == -1) return true;
+
+            return false;
         }
 
         public string RetrieveRawStockPriceFromCSV(string stockCode, StreamReader csvStream)
@@ -58,12 +71,12 @@ namespace Chatroom.Bot
 
                 return column[6];
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(string.Format("Error while retrieving price in CSV for stock {0}.", stockCode), ex);
             }
         }
-        
+
         public string ProcessRawStockPrice(string stockCode, string rawstockPrice)
         {
             decimal decStockPrice;
