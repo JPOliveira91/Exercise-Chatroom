@@ -31,7 +31,14 @@ using (var channel = connection.CreateModel())
             Console.WriteLine(" [.] RetrieveStockPrice({0})", stockCode);
             var apiIntegration = new APIIntegration();
             var processStockPrice = new ProcessStockPrice(apiIntegration);
-            response = string.Format("{0} quote is ${1} per share", stockCode, processStockPrice.RetrieveStockPrice(stockCode));
+            if (!String.IsNullOrEmpty(stockCode))
+            {
+                response = string.Format("{0} quote is ${1} per share", stockCode, processStockPrice.RetrieveStockPrice(stockCode));
+            }
+            else
+            {
+                response = "Empty stockcode send.";
+            }
         }
         catch (Exception e)
         {
