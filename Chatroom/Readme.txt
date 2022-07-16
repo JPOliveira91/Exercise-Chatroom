@@ -1,15 +1,17 @@
 How to build Chatroom environment
 
-1) Open Visual Studio
-2) Build Solution
-3) Open "Tools -> NuGet Package Manager - > Package Manager Console"
-4) In Package Manager Console, run the following command to create the Database: "Update-Database"
-5) Open "View -> Terminal"
-6) Run command "cd Chatroom.Bot"
-7) Run command "dotnet run"
-8) Open new "View -> Terminal"
-9) Run command "cd Chatroom.UI"
-10) Run command "dotnet run"
+01) Open Visual Studio
+02) Open "File -> Open -> Project/Solution"
+03) Select "\Chatroom\Chatroom.sln"
+04) Build Solution
+05) Open "Tools -> NuGet Package Manager - > Package Manager Console"
+06) In Package Manager Console, run the following command to create the Database: "Update-Database"
+07) Open "View -> Terminal"
+08) Run command "cd Chatroom.Bot"
+09) Run command "dotnet run"
+10) Open new "View -> Terminal"
+11) Run command "cd Chatroom.UI"
+12) Run command "dotnet run"
 
 How to use Chatroom post build
 
