@@ -30,7 +30,7 @@ using (var channel = connection.CreateModel())
         try
         {
             Console.WriteLine(" [.] RetrieveStockPrice({0})", stockCode);
-            response = string.Format("{0} quote is ${1} per share", stockCode, RetrieveStockPriceFromAPI(stockCode));
+            response = string.Format("{0} quote is ${1} per share", stockCode, RetrieveStockPrice2(stockCode));
         }
         catch (Exception e)
         {
@@ -51,30 +51,75 @@ using (var channel = connection.CreateModel())
     Console.ReadLine();
 }
 
-string RetrieveStockPriceFromAPI(string stockCode)
+//string RetrieveStockPrice(string stockCode)
+//{
+//    var url = "https://stooq.com/q/l/";
+//    var urlParameters = string.Format("?s={0}&f=sd2t2ohlcv&h&e=csv", stockCode.ToLower());
+//    decimal decStockPrice = 0;
+
+//    HttpClient client = new HttpClient();
+//    client.BaseAddress = new Uri(url);
+
+//    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+//    var culture = CultureInfo.CreateSpecificCulture("en-US");
+
+//    // List data response.
+//    HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+//    if (response.IsSuccessStatusCode)
+//    {        
+//        // Parse the response body.
+//        var csvStream = response.Content.ReadAsStreamAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
+
+//        var style = NumberStyles.Number;
+//        var stockPrice = RetrieveStockPriceFromCSV(csvStream);
+
+//        if (!Decimal.TryParse(stockPrice, style, culture, out decStockPrice)) throw new Exception("Invalid stock price.");
+//    }
+//    else
+//    {
+//        Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+//    }
+
+//    // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
+//    client.Dispose();
+
+//    return decStockPrice.ToString("0.00", culture);
+//}
+
+string RetrieveStockPrice2(string stockCode)
+{
+    var csvStream = RetrieveCSVFromAPI(stockCode);
+    if (csvStream == Stream.Null) throw new Exception(String.Format("CSV was not retrieved for stockcode {0}.", stockCode));
+    var stockPrice = RetrieveStockPriceFromCSV(csvStream);
+
+    decimal decStockPrice = 0;
+    var style = NumberStyles.Number;
+    var culture = CultureInfo.CreateSpecificCulture("en-US");
+
+    if (!Decimal.TryParse(stockPrice, style, culture, out decStockPrice)) throw new Exception(String.Format("Invalid price in retrieved CSV for stockcode {0}.", stockPrice));
+
+    return decStockPrice.ToString("0.00", culture);
+}
+
+Stream RetrieveCSVFromAPI(string stockCode)
 {
     var url = "https://stooq.com/q/l/";
     var urlParameters = string.Format("?s={0}&f=sd2t2ohlcv&h&e=csv", stockCode.ToLower());
-    decimal decStockPrice = 0;
 
     HttpClient client = new HttpClient();
+    Stream csvStream = Stream.Null;
     client.BaseAddress = new Uri(url);
 
     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-    var culture = CultureInfo.CreateSpecificCulture("en-US");
-
     // List data response.
     HttpResponseMessage response = client.GetAsync(urlParameters).Result;  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+
     if (response.IsSuccessStatusCode)
-    {        
+    {
         // Parse the response body.
-        var csvStream = response.Content.ReadAsStreamAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
-
-        var style = NumberStyles.Number;
-        var stockPrice = RetrieveStockPriceFromCSV(csvStream);
-
-        if (!Decimal.TryParse(stockPrice, style, culture, out decStockPrice)) throw new Exception("Invalid stock price.");
+        csvStream = response.Content.ReadAsStreamAsync().Result;  //Make sure to add a reference to System.Net.Http.Formatting.dll
     }
     else
     {
@@ -84,7 +129,7 @@ string RetrieveStockPriceFromAPI(string stockCode)
     // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
     client.Dispose();
 
-    return decStockPrice.ToString("0.00", culture);
+    return csvStream;
 }
 
 string RetrieveStockPriceFromCSV(Stream csvStream)

@@ -7,7 +7,13 @@ using SignalRChat.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
+{
+
+    options.Conventions.AddPageRoute("/Login", "");
+
+});
+
 builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ChatroomUIContext>(options =>

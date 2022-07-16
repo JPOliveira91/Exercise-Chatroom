@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatroom.UI", "Chatroom.UI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chatroom.Bot", "Chatroom.Bot\Chatroom.Bot.csproj", "{F02031E5-FADF-40FA-9780-DA9EC052919D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chatroom.UnitTest", "Chatroom.Test\Chatroom.UnitTest.csproj", "{5AD151BB-82F9-4E69-832F-6086F2448531}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F02031E5-FADF-40FA-9780-DA9EC052919D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AD151BB-82F9-4E69-832F-6086F2448531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AD151BB-82F9-4E69-832F-6086F2448531}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AD151BB-82F9-4E69-832F-6086F2448531}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AD151BB-82F9-4E69-832F-6086F2448531}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
