@@ -13,17 +13,6 @@ namespace Chatroom.Bot
             return ProcessRawStockPrice(stockCode, rawstockPrice);
         }
 
-        public string ProcessRawStockPrice(string stockCode, string rawstockPrice)
-        {
-            decimal decStockPrice;
-            var style = NumberStyles.Number;
-            var culture = CultureInfo.CreateSpecificCulture("en-US");
-
-            if (!Decimal.TryParse(rawstockPrice, style, culture, out decStockPrice)) throw new Exception(String.Format("Invalid price in retrieved CSV for stockcode {0}.", stockCode));
-
-            return decStockPrice.ToString("0.00", culture);
-        }
-
         public StreamReader RetrieveCSVFromAPI(string stockCode)
         {
             var url = "https://stooq.com/q/l/";
@@ -45,11 +34,8 @@ namespace Chatroom.Bot
             }
             else
             {
-                Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+                throw new Exception(string.Format("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase));
             }
-
-            // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
-            client.Dispose();
 
             if (csvStream == StreamReader.Null) throw new Exception(String.Format("CSV was not retrieved for stockcode {0}.", stockCode));
 
@@ -76,6 +62,17 @@ namespace Chatroom.Bot
             {
                 throw new Exception(string.Format("Error while retrieving price in CSV for stock {0}.", stockCode), ex);
             }
+        }
+        
+        public string ProcessRawStockPrice(string stockCode, string rawstockPrice)
+        {
+            decimal decStockPrice;
+            var style = NumberStyles.Number;
+            var culture = CultureInfo.CreateSpecificCulture("en-US");
+
+            if (!Decimal.TryParse(rawstockPrice, style, culture, out decStockPrice)) throw new Exception(String.Format("Invalid price in retrieved CSV for stockcode {0}.", stockCode));
+
+            return decStockPrice.ToString("0.00", culture);
         }
     }
 }
