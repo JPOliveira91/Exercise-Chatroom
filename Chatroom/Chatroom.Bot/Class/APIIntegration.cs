@@ -1,5 +1,6 @@
 ﻿using Chatroom.Bot.Interface;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
 
 namespace Chatroom.Bot.Class
 {
@@ -7,8 +8,14 @@ namespace Chatroom.Bot.Class
     {
         public HttpResponseMessage CallAPI(string stockCode)
         {
-            var url = "https://stooq.com/q/l/";
-            var urlParameters = string.Format("?s={0}&f=sd2t2ohlcv&h&e=csv", stockCode.ToLower());
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"appsettings.json");
+
+            var config = configuration.Build();
+
+            var url = config["StockPriceAPI:URL"];
+            var urlParameters = string.Format(config["StockPriceAPI:Parameter"], stockCode.ToLower());
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(url);
