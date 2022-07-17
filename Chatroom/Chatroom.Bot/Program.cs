@@ -38,12 +38,13 @@ using (var channel = connection.CreateModel())
             else
             {
                 response = "Empty stockcode send.";
+                Console.WriteLine(" [.] " + response);
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(" [.] " + e.Message);
-            response = string.Format("Error while retrieving stock price for {0}. Please try again!", stockCode);
+            response = string.Format("Error while retrieving stock price for {0}.", stockCode);
         }
         finally
         {

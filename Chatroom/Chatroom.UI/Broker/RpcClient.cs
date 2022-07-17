@@ -14,9 +14,9 @@ public class RpcClient
     private readonly IBasicProperties props;
 
     public RpcClient()
-    {
+    {        
         var factory = new ConnectionFactory() { HostName = "localhost" };
-
+        
         connection = factory.CreateConnection();
         channel = connection.CreateModel();
         replyQueueName = channel.QueueDeclare().QueueName;
@@ -43,7 +43,7 @@ public class RpcClient
             autoAck: true);
     }
 
-    public string RetrieveStockPrice(string message)
+    public string RetrieveStockPriceMessage(string message)
     {
         var messageBytes = Encoding.UTF8.GetBytes(message);
         channel.BasicPublish(
@@ -52,7 +52,15 @@ public class RpcClient
             basicProperties: props,
             body: messageBytes);
 
-        return respQueue.Take();
+        string stockPriceMessage;
+        if(respQueue.TryTake(out stockPriceMessage, 10000))
+        {
+            return stockPriceMessage;
+        }
+        else
+        {
+            throw new Exception("Error while connecting with RabbitMQ server.");
+        }
     }
 
     public void Close()

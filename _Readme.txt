@@ -1,11 +1,9 @@
 Pre-requisites
 
-- Installed RabbitMQ Server
-- Installed MS SQL Server
-- Installed .NET 6
-- Installed Visual Studio
-- Environment variable **PATH** contains the following value (value for VS 2022, check path for different versions):
-	> %ProgramFiles%\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin
+- RabbitMQ Server
+- MS SQL Server
+- .NET 6
+- Visual Studio
 
 How to Run with Installer
 

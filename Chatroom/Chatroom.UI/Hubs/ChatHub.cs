@@ -38,11 +38,20 @@ namespace SignalRChat.Hubs
 
         public string RetrieveStockPriceMessage(string stockCode)
         {
-            var rpcClient = new RpcClient();
+            string response;
 
-            var response = rpcClient.RetrieveStockPrice(stockCode);
+            try
+            {
+                var rpcClient = new RpcClient();
 
-            rpcClient.Close();
+                response = rpcClient.RetrieveStockPriceMessage(stockCode);
+
+                rpcClient.Close();
+            }
+            catch (Exception ex)
+            {
+                response = String.Format("Error while retrieving stock price for {0}.", stockCode);
+            }
 
             return response;
         }
